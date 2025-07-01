@@ -1,0 +1,50 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users collection - users can only read/write their own data
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Analyses collection - users can only access their own analyses
+    match /analyses/{analysisId} {
+      allow read, write: if request.auth != null && 
+        (resource == null || resource.data.userId == request.auth.uid);
+      
+      // Allow creation only if the userId matches the authenticated user
+      allow create: if request.auth != null && 
+        request.resource.data.userId == request.auth.uid;
+    }
+    
+    // Usage collection - users can only read their own usage data
+    match /usage/{usageId} {
+      allow read: if request.auth != null && 
+        resource.data.userId == request.auth.uid;
+      
+      // Only server can write usage data
+      allow write: if false;
+    }
+    
+    // App settings - read-only for authenticated users
+    match /settings/{settingId} {
+      allow read: if request.auth != null;
+      allow write: if false; // Only admins can write (handled server-side)
+    }
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    function isValidAnalysis() {
+      return request.resource.data.keys().hasAll([
+        'userId', 'imageUrl', 'demographics', 'objective'
+      ]) && request.resource.data.userId == request.auth.uid;
+    }
+  }
+}

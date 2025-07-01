@@ -8,10 +8,8 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -97,30 +95,42 @@ export default function DashboardClient() {
     setIsAutoGenerating(true);
     
     try {
-      // Generate demographics and campaign objective in parallel
-      const [demographicsResponse, objectiveResponse] = await Promise.allSettled([
-        getDemographicsFromCreative({ creativeDataUri: imageUrl }),
-        getCampaignObjectiveSuggestion({ creativeDataUri: imageUrl })
-      ]);
-
-      // Handle demographics result
-      if (demographicsResponse.status === 'fulfilled' && demographicsResponse.value.success) {
-        setDemographics(demographicsResponse.value.data!.demographics);
+      // Step 1: Generate demographics first
+      const demographicsResponse = await getDemographicsFromCreative({ creativeDataUri: imageUrl });
+      
+      if (demographicsResponse.success && demographicsResponse.data) {
+        setDemographics(demographicsResponse.data.demographics);
         setDemographicsCompleted(true);
         setErrors(prev => ({ ...prev, demographics: undefined }));
+        
+        toast({
+          title: "¡Demografía generada!",
+          description: "Ahora generando objetivo de campaña...",
+        });
+        
+        // Step 2: Generate campaign objective after demographics is complete
+        const objectiveResponse = await getCampaignObjectiveSuggestion({ 
+          creativeDataUri: imageUrl,
+          demographics: demographicsResponse.data.demographics 
+        });
+        
+        if (objectiveResponse.success && objectiveResponse.data) {
+          setObjective(objectiveResponse.data.suggestedObjective);
+          setObjectiveCompleted(true);
+          setErrors(prev => ({ ...prev, objective: undefined }));
+          
+          toast({
+            title: "¡Generación automática completada!",
+            description: "Demografía y objetivo de campaña generados con IA.",
+          });
+        }
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error en demografía",
+          description: "No se pudo generar la demografía automáticamente.",
+        });
       }
-
-      // Handle objective result
-      if (objectiveResponse.status === 'fulfilled' && objectiveResponse.value.success) {
-        setObjective(objectiveResponse.value.data!.suggestedObjective);
-        setObjectiveCompleted(true);
-        setErrors(prev => ({ ...prev, objective: undefined }));
-      }
-
-      toast({
-        title: "¡Generación automática completada!",
-        description: "La demografía y el objetivo de campaña se han generado automáticamente con IA.",
-      });
     } catch (error) {
       console.error("Error in auto generation:", error);
       toast({
@@ -241,23 +251,28 @@ export default function DashboardClient() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-4 lg:py-8">
       <div className="px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-7xl mx-auto w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8 max-w-7xl mx-auto w-full">
         {/* Input Card */}
-        <Card className="border border-blue-200 bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] overflow-hidden">
+        <Card className="lg:col-span-2 border border-blue-200 bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
           <form onSubmit={onFormSubmit} noValidate>
-            <CardHeader className="text-center pb-6">
-              <div className="flex justify-center items-center gap-4 mb-4">
+            <CardHeader className="text-center pb-6 space-y-4">
+              {/* Breadcrumb */}
+              <div className="text-sm text-slate-500 font-medium">
+                Campañas › Creative Analyzer
+              </div>
+              
+              <div className="flex justify-center items-center gap-4">
                 <div className="relative">
-                  <Brain className="w-10 h-10 text-blue-500" />
+                  <Brain className="w-10 h-10 text-blue-600" />
                 </div>
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button 
-                      variant="outline" 
+                      variant="ghost" 
                       size="icon"
-                      className="bg-white border-blue-300 text-blue-500 hover:bg-blue-50 hover:border-blue-400 transition-all duration-200"
+                      className="text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200"
                     >
-                      <HelpCircle className="h-4 w-4" />
+                      <HelpCircle className="h-5 w-5" />
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="bg-white border-blue-200 text-slate-800">
@@ -306,20 +321,23 @@ export default function DashboardClient() {
                   </DialogContent>
                 </Dialog>
               </div>
-              <CardTitle className="text-2xl lg:text-3xl font-bold text-blue-600">
-                AI Creative Analyzer
-              </CardTitle>
-              <CardDescription className="text-slate-600 text-lg mt-2">
-                Potenciado por Inteligencia Artificial avanzada
-              </CardDescription>
+              <div className="space-y-2">
+                <h1 className="text-2xl font-bold text-slate-900">
+                  AI Creative Analyzer
+                </h1>
+                <h2 className="text-base text-slate-600 font-medium">
+                  Potenciado por Inteligencia Artificial avanzada
+                </h2>
+              </div>
             </CardHeader>
             
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-4">
               {/* Upload Section */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <Eye className="w-5 h-5 text-blue-500" />
-                  <Label htmlFor="file-upload" className="text-slate-700 font-semibold">
+              <Card className="border border-slate-200 bg-slate-50">
+                <CardContent className="p-6 space-y-4">
+                <div className="flex items-center gap-3">
+                  <Eye className="w-5 h-5 text-blue-600" />
+                  <Label htmlFor="file-upload" className="text-slate-800 font-semibold text-base">
                     Creatividad del anuncio
                   </Label>
                 </div>
@@ -379,20 +397,22 @@ export default function DashboardClient() {
                     {errors.creative}
                   </p>
                 )}
-              </div>
+                </CardContent>
+              </Card>
               
               {/* Demographics Section */}
-              <div className="space-y-3">
+              <Card className="border border-slate-200 bg-slate-50">
+                <CardContent className="p-6 space-y-4">
                 <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <Zap className="w-5 h-5 text-blue-500" />
-                    <Label htmlFor="demographics" className="text-slate-700 font-semibold">
+                  <div className="flex items-center gap-3">
+                    <Zap className="w-5 h-5 text-blue-600" />
+                    <Label htmlFor="demographics" className="text-slate-800 font-semibold text-base">
                       Demografía del público objetivo
                     </Label>
                     {isAutoGenerating ? (
-                      <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />
+                      <Loader2 className="w-4 h-4 text-blue-600 animate-spin" />
                     ) : demographicsCompleted ? (
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      <CheckCircle2 className="w-4 h-4 text-green-600" />
                     ) : null}
                   </div>
                   <Button
@@ -414,7 +434,7 @@ export default function DashboardClient() {
                 <Textarea
                   id="demographics"
                   placeholder="Sube una imagen para generar la demografía con IA, o descríbela tú mismo aquí..."
-                  className="resize-none bg-white border-gray-300 text-slate-700 placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-200"
+                  className="resize-none bg-white border-slate-300 text-slate-700 placeholder:text-slate-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all duration-200 leading-relaxed"
                   value={demographics}
                   onChange={(e) => {
                     setDemographics(e.target.value);
@@ -428,17 +448,19 @@ export default function DashboardClient() {
                     {errors.demographics}
                   </p>
                 )}
-              </div>
+                </CardContent>
+              </Card>
 
               {/* Objective Section */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <Target className="w-5 h-5 text-blue-500" />
-                  <Label className="text-slate-700 font-semibold">Objetivo de la campaña</Label>
+              <Card className="border border-slate-200 bg-slate-50">
+                <CardContent className="p-6 space-y-4">
+                <div className="flex items-center gap-3">
+                  <Target className="w-5 h-5 text-blue-600" />
+                  <Label className="text-slate-800 font-semibold text-base">Objetivo de la campaña</Label>
                   {isAutoGenerating ? (
-                    <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />
+                    <Loader2 className="w-4 h-4 text-blue-600 animate-spin" />
                   ) : objectiveCompleted ? (
-                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <CheckCircle2 className="w-4 h-4 text-green-600" />
                   ) : null}
                 </div>
                 <Select onValueChange={(value) => {
@@ -446,16 +468,46 @@ export default function DashboardClient() {
                     setObjectiveCompleted(value.length > 0);
                     setErrors(prev => ({...prev, objective: undefined}));
                 }} value={objective}>
-                  <SelectTrigger className="bg-white border-gray-300 text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-200">
-                    <SelectValue placeholder="Selecciona un objetivo" />
+                  <SelectTrigger className="bg-white border-slate-300 text-slate-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all duration-200 h-11">
+                    <SelectValue placeholder="Selecciona un objetivo" className="text-slate-500" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border-gray-200">
-                    <SelectItem value="awareness" className="text-slate-700">Reconocimiento</SelectItem>
-                    <SelectItem value="traffic" className="text-slate-700">Tráfico</SelectItem>
-                    <SelectItem value="engagement" className="text-slate-700">Interacción</SelectItem>
-                    <SelectItem value="lead_generation" className="text-slate-700">Generación de leads</SelectItem>
-                    <SelectItem value="app_installs" className="text-slate-700">Instalaciones de la app</SelectItem>
-                    <SelectItem value="conversion" className="text-slate-700">Conversiones</SelectItem>
+                  <SelectContent className="bg-white border-slate-200 shadow-lg">
+                    <SelectItem value="awareness" className="text-slate-800 hover:bg-blue-50 focus:bg-blue-50 cursor-pointer">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+                        Reconocimiento
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="traffic" className="text-slate-800 hover:bg-blue-50 focus:bg-blue-50 cursor-pointer">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                        Tráfico
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="engagement" className="text-slate-800 hover:bg-blue-50 focus:bg-blue-50 cursor-pointer">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                        Interacción
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="lead_generation" className="text-slate-800 hover:bg-blue-50 focus:bg-blue-50 cursor-pointer">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-orange-500"></div>
+                        Generación de leads
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="app_installs" className="text-slate-800 hover:bg-blue-50 focus:bg-blue-50 cursor-pointer">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-indigo-500"></div>
+                        Instalaciones de la app
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="conversion" className="text-slate-800 hover:bg-blue-50 focus:bg-blue-50 cursor-pointer">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                        Conversiones
+                      </div>
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 {errors.objective && (
@@ -463,13 +515,14 @@ export default function DashboardClient() {
                     {errors.objective}
                   </p>
                 )}
-              </div>
+                </CardContent>
+              </Card>
             </CardContent>
             
-            <CardFooter className="pt-6">
+            <CardFooter className="pt-6 pb-6 px-6 sticky bottom-0 bg-white border-t border-slate-200">
               <Button 
                 type="submit" 
-                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none" 
+                className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold text-base rounded-lg shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" 
                 disabled={isLoading}
               >
                 <span className="flex items-center justify-center">
@@ -484,7 +537,7 @@ export default function DashboardClient() {
         </Card>
 
         {/* Results Card */}
-        <div className="h-fit">
+        <div className="lg:col-span-3 h-fit">
           {isLoading ? (
             <Card className="border border-blue-200 bg-white h-full shadow-lg">
               <div className="p-6">
