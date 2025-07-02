@@ -450,6 +450,9 @@ export default function DashboardClient() {
                 <h2 className="text-base text-slate-600 font-medium">
                   Potenciado por Inteligencia Artificial avanzada
                 </h2>
+                <div className="text-xs text-slate-400 mt-1">
+                  v{process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0'}
+                </div>
               </div>
             </CardHeader>
             

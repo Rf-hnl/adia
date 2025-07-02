@@ -38,6 +38,7 @@ GOOGLE_GENAI_API_KEY = tu-google-genai-api-key
 #### App Configuration
 ```
 NEXT_PUBLIC_APP_URL = https://tu-app.vercel.app
+NEXT_PUBLIC_APP_VERSION = 1.0.0
 NODE_ENV = production
 ```
 
