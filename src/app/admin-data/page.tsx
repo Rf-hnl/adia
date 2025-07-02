@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { collection, getDocs, query, orderBy, limit, where } from 'firebase/firestore';
-import { db } from '../../lib/firebase';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-import { Badge } from '../../components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
+import { db } from '@/lib/firebase';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Eye, EyeOff, Download, RefreshCw, TrendingUp, Users, MessageSquare, AlertTriangle, BarChart3, Webhook, Copy, Code } from 'lucide-react';
 
 const ADMIN_PASSWORD = 'QWE123';
