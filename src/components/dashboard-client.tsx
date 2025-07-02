@@ -135,7 +135,7 @@ export default function DashboardClient() {
     
     try {
       // Check if the URL is accessible by trying to load it
-      const img = new Image();
+      const img = new window.Image();
       img.crossOrigin = "anonymous";
       
       await new Promise((resolve, reject) => {

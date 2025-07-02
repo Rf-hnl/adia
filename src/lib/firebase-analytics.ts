@@ -392,7 +392,7 @@ class FirebaseAnalytics {
   }
 
   // Get user's analysis history (for showing past analyses)
-  async getUserAnalysisHistory(limit: number = 10): Promise<AnalysisSession[]> {
+  async getUserAnalysisHistory(limitCount: number = 10): Promise<AnalysisSession[]> {
     const userData = anonymousUserManager.getAnonymousUserData();
     
     try {
@@ -400,7 +400,7 @@ class FirebaseAnalytics {
         collection(db, COLLECTIONS.ANALYSIS_SESSIONS),
         where('anonymousUserId', '==', userData.id),
         orderBy('createdAt', 'desc'),
-        limit(limit)
+        limit(limitCount)
       );
       
       const querySnapshot = await getDocs(q);

@@ -140,11 +140,11 @@ export async function POST(request: NextRequest) {
         
         // AI Results
         results: {
-          performanceScore: analysisResult.performanceScore,
-          clarityScore: analysisResult.clarityScore,
-          designScore: analysisResult.designScore,
-          audienceAffinityScore: analysisResult.audienceAffinityScore,
-          recommendations: analysisResult.recommendations || []
+          performanceScore: analysisResult!.performanceScore,
+          clarityScore: analysisResult!.clarityScore,
+          designScore: analysisResult!.designScore,
+          audienceAffinityScore: analysisResult!.audienceAffinityScore,
+          recommendations: analysisResult!.recommendations || []
         },
         
         // Performance metrics
@@ -179,12 +179,12 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString(),
       analysis: {
         "Desglose del rendimiento": {
-          "Puntuación de rendimiento general": analysisResult.performanceScore,
-          "Claridad y legibilidad": analysisResult.clarityScore,
-          "Atractivo del diseño": analysisResult.designScore,
-          "Afinidad con la audiencia": analysisResult.audienceAffinityScore
+          "Puntuación de rendimiento general": analysisResult!.performanceScore,
+          "Claridad y legibilidad": analysisResult!.clarityScore,
+          "Atractivo del diseño": analysisResult!.designScore,
+          "Afinidad con la audiencia": analysisResult!.audienceAffinityScore
         },
-        "Recomendaciones de IA": analysisResult.recommendations || []
+        "Recomendaciones de IA": analysisResult!.recommendations || []
       },
       metadata: {
         processingTimeMs: processingTime,
@@ -197,11 +197,11 @@ export async function POST(request: NextRequest) {
     };
 
     console.log('✅ Webhook analysis completed:', {
-      performanceScore: analysisResult.performanceScore,
-      clarityScore: analysisResult.clarityScore,
-      designScore: analysisResult.designScore,
-      audienceAffinityScore: analysisResult.audienceAffinityScore,
-      recommendationsCount: analysisResult.recommendations?.length || 0
+      performanceScore: analysisResult!.performanceScore,
+      clarityScore: analysisResult!.clarityScore,
+      designScore: analysisResult!.designScore,
+      audienceAffinityScore: analysisResult!.audienceAffinityScore,
+      recommendationsCount: analysisResult!.recommendations?.length || 0
     });
 
     return NextResponse.json(response, { 

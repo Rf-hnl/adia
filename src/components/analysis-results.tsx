@@ -124,7 +124,6 @@ export const AnalysisResults = ({
                     innerRadius="70%"
                     outerRadius="100%"
                     barSize={20}
-                    domain={[0, 100]}
                   >
                     <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
                     <RadialBar
