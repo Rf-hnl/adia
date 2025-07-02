@@ -1,11 +1,11 @@
 {
   "indexes": [
     {
-      "collectionGroup": "analyses",
+      "collectionGroup": "analysis_sessions",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "userId",
+          "fieldPath": "anonymousUserId",
           "order": "ASCENDING"
         },
         {
@@ -15,15 +15,11 @@
       ]
     },
     {
-      "collectionGroup": "analyses",
-      "queryScope": "COLLECTION", 
+      "collectionGroup": "analysis_sessions",
+      "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "userId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "status",
+          "fieldPath": "imageHash",
           "order": "ASCENDING"
         },
         {
@@ -33,15 +29,63 @@
       ]
     },
     {
-      "collectionGroup": "usage",
+      "collectionGroup": "feedback",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "userId",
+          "fieldPath": "anonymousUserId",
           "order": "ASCENDING"
         },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "feedback",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "analysisSessionId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "usage_stats",
+      "queryScope": "COLLECTION",
+      "fields": [
         {
           "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "anonymous_users",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "lastActive",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "error_logs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "anonymousUserId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
           "order": "DESCENDING"
         }
       ]

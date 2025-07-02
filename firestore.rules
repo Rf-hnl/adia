@@ -2,49 +2,78 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Users collection - users can only read/write their own data
+    // Anonymous users collection - allow read/write for anonymous usage
+    match /anonymous_users/{anonymousUserId} {
+      allow read, write: if true; // Public access for anonymous tracking
+    }
+    
+    // Analysis sessions - allow read/write for anonymous users
+    match /analysis_sessions/{sessionId} {
+      allow read, write: if true; // Public access for testing phase
+      
+      // Validate required fields on creation
+      allow create: if request.resource.data.keys().hasAll([
+        'anonymousUserId', 'imageHash', 'demographics', 'objective', 'results'
+      ]);
+    }
+    
+    // Feedback collection - allow anonymous feedback
+    match /feedback/{feedbackId} {
+      allow read, write: if true; // Public access for feedback collection
+      
+      // Validate feedback structure
+      allow create: if request.resource.data.keys().hasAll([
+        'anonymousUserId', 'analysisSessionId', 'overallRating'
+      ]) && request.resource.data.overallRating is number &&
+      request.resource.data.overallRating >= 1 &&
+      request.resource.data.overallRating <= 5;
+    }
+    
+    // Usage statistics - read-only for all, write by server only
+    match /usage_stats/{statsId} {
+      allow read: if true; // Public read access for transparency
+      allow write: if false; // Only server can write stats
+    }
+    
+    // Error logs - write-only for logging, no read access
+    match /error_logs/{errorId} {
+      allow read: if false; // No read access for privacy
+      allow write: if true; // Allow error logging
+    }
+    
+    // App settings - read-only for all users
+    match /settings/{settingId} {
+      allow read: if true; // Public read access
+      allow write: if false; // Only server can write settings
+    }
+    
+    // Future authenticated user data (for when auth is added)
     match /users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
     
-    // Analyses collection - users can only access their own analyses
-    match /analyses/{analysisId} {
+    match /user_analyses/{analysisId} {
       allow read, write: if request.auth != null && 
         (resource == null || resource.data.userId == request.auth.uid);
-      
-      // Allow creation only if the userId matches the authenticated user
-      allow create: if request.auth != null && 
-        request.resource.data.userId == request.auth.uid;
-    }
-    
-    // Usage collection - users can only read their own usage data
-    match /usage/{usageId} {
-      allow read: if request.auth != null && 
-        resource.data.userId == request.auth.uid;
-      
-      // Only server can write usage data
-      allow write: if false;
-    }
-    
-    // App settings - read-only for authenticated users
-    match /settings/{settingId} {
-      allow read: if request.auth != null;
-      allow write: if false; // Only admins can write (handled server-side)
     }
     
     // Helper functions
-    function isAuthenticated() {
-      return request.auth != null;
+    function isValidAnonymousUser() {
+      return request.resource.data.keys().hasAll(['id', 'deviceInfo']) &&
+        request.resource.data.id is string &&
+        request.resource.data.deviceInfo is map;
     }
     
-    function isOwner(userId) {
-      return request.auth.uid == userId;
-    }
-    
-    function isValidAnalysis() {
+    function isValidAnalysisSession() {
       return request.resource.data.keys().hasAll([
-        'userId', 'imageUrl', 'demographics', 'objective'
-      ]) && request.resource.data.userId == request.auth.uid;
+        'anonymousUserId', 'imageHash', 'demographics', 'objective'
+      ]);
+    }
+    
+    function isValidFeedback() {
+      return request.resource.data.overallRating is number &&
+        request.resource.data.overallRating >= 1 &&
+        request.resource.data.overallRating <= 5;
     }
   }
 }

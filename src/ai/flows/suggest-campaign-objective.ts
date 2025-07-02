@@ -46,27 +46,31 @@ const prompt = ai.definePrompt({
   name: 'suggestObjectivePrompt',
   input: {schema: SuggestObjectiveInputSchema},
   output: {schema: SuggestObjectiveOutputSchema},
-  prompt: `Eres un especialista en marketing digital experto en análisis de creatividades publicitarias.
+  prompt: `Analiza rápidamente esta creatividad publicitaria y sugiere el objetivo de campaña más apropiado.
 
-Analiza la imagen de la creatividad del anuncio y sugiere el objetivo de campaña más apropiado de las siguientes opciones:
-- awareness: Para aumentar el reconocimiento de marca
-- traffic: Para dirigir tráfico al sitio web
-- engagement: Para aumentar la interacción con el contenido
-- lead_generation: Para generar leads o suscripciones
-- app_installs: Para promover descargas de aplicaciones
-- conversion: Para generar ventas o conversiones directas
+OPCIONES (elige una):
+- awareness: Reconocimiento de marca
+- traffic: Tráfico web
+- engagement: Interacción
+- lead_generation: Generar leads
+- app_installs: Descargas app
+- conversion: Ventas/conversiones
 
-Imagen de la creatividad: {{{creativeDataUri}}}
-Demografía del público (si está disponible): {{{demographics}}}
+IMAGEN: {{{creativeDataUri}}}
+DEMOGRAFÍA: {{{demographics}}}
 
-Consideraciones para el análisis:
-- El tipo de producto o servicio mostrado
-- El lenguaje visual y llamadas a la acción
-- La presencia de elementos como códigos QR, URLs, precios, ofertas
-- El estilo visual (corporativo, creativo, promocional)
-- Los elementos de marca y posicionamiento
+CRITERIOS:
+- Tipo de producto/servicio
+- Llamadas a la acción visibles
+- Precios, ofertas, códigos QR
+- Estilo visual
 
-Proporciona una sugerencia clara con alta confianza y una explicación detallada del razonamiento.`,
+Responde SOLO con JSON:
+{
+  "suggestedObjective": "uno_de_los_valores_exactos",
+  "confidence": número_0_100,
+  "reasoning": "breve_explicación"
+}`,
 });
 
 const suggestObjectiveFlow = ai.defineFlow(
@@ -76,7 +80,42 @@ const suggestObjectiveFlow = ai.defineFlow(
     outputSchema: SuggestObjectiveOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
-    return output!;
+    try {
+      console.log('suggestObjectiveFlow starting with input:', {
+        hasCreativeDataUri: !!input.creativeDataUri,
+        demographics: input.demographics?.substring(0, 50) + '...'
+      });
+      
+      // Add timeout to prevent hanging
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Campaign objective suggestion timeout')), 15000)
+      );
+      
+      const promptPromise = prompt(input);
+      
+      const {output} = await Promise.race([promptPromise, timeoutPromise]) as any;
+      
+      console.log('suggestObjectiveFlow result:', output);
+      
+      if (!output) {
+        throw new Error('No output received from AI model');
+      }
+      
+      return output;
+    } catch (error) {
+      console.error('Error in suggestObjectiveFlow:', error);
+      
+      // Return a fallback suggestion if AI fails
+      if (error instanceof Error && error.message.includes('timeout')) {
+        console.log('Returning fallback objective due to timeout');
+        return {
+          suggestedObjective: 'engagement' as const,
+          confidence: 50,
+          reasoning: 'Sugerencia por defecto debido a timeout en el análisis de IA'
+        };
+      }
+      
+      throw error;
+    }
   }
 );

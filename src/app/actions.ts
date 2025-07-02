@@ -28,7 +28,15 @@ export async function getDemographicsFromCreative(input: ExtractDemographicsInpu
 
 export async function getCampaignObjectiveSuggestion(input: SuggestObjectiveInput) {
   try {
+    console.log('getCampaignObjectiveSuggestion input:', {
+      hasCreativeDataUri: !!input.creativeDataUri,
+      creativeDataUriLength: input.creativeDataUri?.length,
+      demographics: input.demographics,
+    });
+    
     const result = await suggestCampaignObjective(input);
+    console.log('getCampaignObjectiveSuggestion result:', result);
+    
     return { success: true, data: result };
   } catch (e) {
     console.error('Error in getCampaignObjectiveSuggestion:', e);

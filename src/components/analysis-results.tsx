@@ -8,6 +8,8 @@ import {
   CheckCircle2,
   Copy,
 } from "lucide-react";
+import { FeedbackDialog } from "./feedback-dialog";
+import { ImprovementPromptModal } from "./improvement-prompt-modal";
 import { PolarAngleAxis, RadialBar, RadialBarChart } from "recharts";
 
 import { Button } from "@/components/ui/button";
@@ -23,13 +25,28 @@ import { useToast } from "@/hooks/use-toast";
 import type { AnalysisResult } from "@/lib/types";
 import { ChartContainer } from "@/components/ui/chart";
 
-export const AnalysisResults = ({ result, image }: { result: AnalysisResult; image: string | null; }) => {
+export const AnalysisResults = ({ 
+  result, 
+  image, 
+  analysisSessionId 
+}: { 
+  result: AnalysisResult; 
+  image: string | null; 
+  analysisSessionId?: string | null;
+}) => {
   const { toast } = useToast();
-  const chartData = [
-    { name: "score", value: result.performanceScore, fill: "hsl(var(--primary))" },
-  ];
   
-  const scoreColor = `hsl(var(--primary))`;
+  // Function to get color based on score
+  const getScoreColor = (score: number) => {
+    if (score >= 75) return "#10b981"; // green-500 - good scores
+    if (score >= 50) return "#3b82f6"; // blue-500 - normal scores  
+    return "#ef4444"; // red-500 - low scores
+  };
+  
+  const scoreColor = getScoreColor(result.performanceScore);
+  const chartData = [
+    { name: "score", value: result.performanceScore, fill: scoreColor },
+  ];
 
   const handleCopyAll = () => {
     if (!result.recommendations || result.recommendations.length === 0) return;
@@ -95,13 +112,13 @@ export const AnalysisResults = ({ result, image }: { result: AnalysisResult; ima
                   config={{
                     score: {
                       label: "Puntuación",
-                      color: "#3b82f6"
+                      color: scoreColor
                     },
                   }}
                   className="mx-auto aspect-square w-full max-w-[180px] lg:max-w-[200px] max-h-[180px] lg:max-h-[200px]"
                 >
                   <RadialBarChart
-                    data={[{ name: "score", value: result.performanceScore, fill: "#3b82f6" }]}
+                    data={[{ name: "score", value: result.performanceScore, fill: scoreColor }]}
                     startAngle={90}
                     endAngle={-270}
                     innerRadius="70%"
@@ -116,7 +133,7 @@ export const AnalysisResults = ({ result, image }: { result: AnalysisResult; ima
                       cornerRadius={10}
                     />
                     <g>
-                      <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" className="fill-blue-600 text-3xl lg:text-4xl font-bold">
+                      <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" className="text-3xl lg:text-4xl font-bold" fill={scoreColor}>
                         {result.performanceScore.toFixed(0)}
                       </text>
                        <text x="50%" y="65%" textAnchor="middle" dominantBaseline="middle" className="fill-slate-500 text-sm lg:text-base">
@@ -144,9 +161,17 @@ export const AnalysisResults = ({ result, image }: { result: AnalysisResult; ima
                 <Lightbulb className="h-4 w-4 lg:h-5 lg:w-5 text-blue-500" />
                 <span className="font-medium text-sm lg:text-base text-slate-700">Puntuación de claridad</span>
               </div>
-              <span className="font-bold text-lg lg:text-xl text-blue-600">{result.clarityScore.toFixed(0)}</span>
+              <span className="font-bold text-lg lg:text-xl" style={{ color: getScoreColor(result.clarityScore) }}>{result.clarityScore.toFixed(0)}</span>
             </div>
-            <Progress value={result.clarityScore} className="h-2 lg:h-3 bg-slate-200 [&>div]:bg-blue-500"/>
+            <div className="w-full bg-slate-200 rounded-full h-2 lg:h-3">
+              <div 
+                className="h-2 lg:h-3 rounded-full transition-all duration-300" 
+                style={{ 
+                  width: `${result.clarityScore}%`, 
+                  backgroundColor: getScoreColor(result.clarityScore) 
+                }}
+              ></div>
+            </div>
           </div>
           <div className="space-y-2 lg:space-y-3">
             <div className="flex justify-between items-center">
@@ -154,9 +179,17 @@ export const AnalysisResults = ({ result, image }: { result: AnalysisResult; ima
                 <PenTool className="h-4 w-4 lg:h-5 lg:w-5 text-blue-500" />
                 <span className="font-medium text-sm lg:text-base text-slate-700">Puntuación de diseño</span>
               </div>
-              <span className="font-bold text-lg lg:text-xl text-blue-600">{result.designScore.toFixed(0)}</span>
+              <span className="font-bold text-lg lg:text-xl" style={{ color: getScoreColor(result.designScore) }}>{result.designScore.toFixed(0)}</span>
             </div>
-            <Progress value={result.designScore} className="h-2 lg:h-3 bg-slate-200 [&>div]:bg-blue-500"/>
+            <div className="w-full bg-slate-200 rounded-full h-2 lg:h-3">
+              <div 
+                className="h-2 lg:h-3 rounded-full transition-all duration-300" 
+                style={{ 
+                  width: `${result.designScore}%`, 
+                  backgroundColor: getScoreColor(result.designScore) 
+                }}
+              ></div>
+            </div>
           </div>
           <div className="space-y-2 lg:space-y-3">
             <div className="flex justify-between items-center">
@@ -164,27 +197,62 @@ export const AnalysisResults = ({ result, image }: { result: AnalysisResult; ima
                 <Target className="h-4 w-4 lg:h-5 lg:w-5 text-blue-500" />
                 <span className="font-medium text-sm lg:text-base text-slate-700">Afinidad con la audiencia</span>
               </div>
-              <span className="font-bold text-lg lg:text-xl text-blue-600">{result.audienceAffinityScore.toFixed(0)}</span>
+              <span className="font-bold text-lg lg:text-xl" style={{ color: getScoreColor(result.audienceAffinityScore) }}>{result.audienceAffinityScore.toFixed(0)}</span>
             </div>
-            <Progress value={result.audienceAffinityScore} className="h-2 lg:h-3 bg-slate-200 [&>div]:bg-blue-500"/>
+            <div className="w-full bg-slate-200 rounded-full h-2 lg:h-3">
+              <div 
+                className="h-2 lg:h-3 rounded-full transition-all duration-300" 
+                style={{ 
+                  width: `${result.audienceAffinityScore}%`, 
+                  backgroundColor: getScoreColor(result.audienceAffinityScore) 
+                }}
+              ></div>
+            </div>
           </div>
         </CardContent>
       </Card>
 
       <Card className="bg-white border-blue-200">
         <CardHeader>
-          <div className="flex justify-between items-center">
-            <div>
-              <CardTitle className="text-xl font-semibold text-blue-600">Recomendaciones de IA</CardTitle>
-              <CardDescription className="text-slate-600">
-                Sugerencias priorizadas para mejorar la efectividad de tu anuncio.
-              </CardDescription>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <CardTitle className="text-xl font-semibold text-blue-600">Recomendaciones de IA</CardTitle>
+                <CardDescription className="text-slate-600">
+                  Sugerencias priorizadas para mejorar la efectividad de tu anuncio.
+                </CardDescription>
+              </div>
+              {Array.isArray(result.recommendations) && result.recommendations.length > 0 && (
+                <div className="flex gap-2">
+                  <ImprovementPromptModal 
+                    recommendations={result.recommendations}
+                    currentImage={image}
+                  />
+                  <Button variant="ghost" size="sm" onClick={handleCopyAll} className="text-blue-600 hover:text-blue-700 hover:bg-transparent">
+                    <Copy className="h-4 w-4" />
+                    <span>Copiar todo</span>
+                  </Button>
+                </div>
+              )}
             </div>
-            {Array.isArray(result.recommendations) && result.recommendations.length > 0 && (
-               <Button variant="ghost" size="sm" onClick={handleCopyAll} className="text-blue-600 hover:text-blue-700 hover:bg-transparent">
-                <Copy className="h-4 w-4" />
-                <span>Copiar todo</span>
-              </Button>
+            
+            {/* Feedback Section */}
+            {analysisSessionId && (
+              <div className="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-slate-200">
+                <div>
+                  <p className="text-sm font-medium text-slate-700">¿Fue útil este análisis?</p>
+                  <p className="text-xs text-slate-500">Tu feedback nos ayuda a mejorar</p>
+                </div>
+                <FeedbackDialog 
+                  analysisSessionId={analysisSessionId}
+                  onFeedbackSubmitted={() => {
+                    toast({
+                      title: "¡Gracias!",
+                      description: "Tu feedback ha sido enviado.",
+                    });
+                  }}
+                />
+              </div>
             )}
           </div>
         </CardHeader>
