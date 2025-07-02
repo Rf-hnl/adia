@@ -71,7 +71,7 @@ export default function SettingsPage() {
                   placeholder="Introduce tu prompt personalizado aquí..."
                 />
               </div>
-            </Content>
+            </CardContent>
             <CardFooter className="flex justify-end gap-2">
               <Button variant="outline" onClick={handleReset}>Restablecer</Button>
               <Button onClick={handleSave}>Guardar Cambios</Button>
