@@ -8,6 +8,11 @@
  * - AnalyzeAdCreativesOutput - El tipo de retorno para la función analyzeAdCreatives.
  */
 
+
+
+
+
+
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import {DEFAULT_AD_ANALYSIS_PROMPT} from '@/lib/prompts';
