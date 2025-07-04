@@ -379,7 +379,7 @@ export default function DashboardClient() {
           <form onSubmit={onFormSubmit} noValidate>
             <CardHeader className="text-center pb-6 space-y-4">
               {/* Breadcrumb */}
-              <div className="text-sm text-slate-500 font-medium">
+              <div className="text-sm text-slate-700 font-medium">
                 Campañas › Creative Analyzer
               </div>
               
@@ -392,7 +392,7 @@ export default function DashboardClient() {
                     <Button 
                       variant="ghost" 
                       size="icon"
-                      className="text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200"
+                      className="text-slate-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200"
                     >
                       <HelpCircle className="h-5 w-5" />
                     </Button>
@@ -450,7 +450,7 @@ export default function DashboardClient() {
                 <h2 className="text-base text-slate-600 font-medium">
                   Potenciado por Inteligencia Artificial avanzada
                 </h2>
-                <div className="text-xs text-slate-400 mt-1">
+                <div className="text-xs text-slate-600 mt-1">
                   v{process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0'}
                 </div>
               </div>
@@ -522,7 +522,7 @@ export default function DashboardClient() {
                                 </span>{" "}
                                 o arrastra tu creatividad
                               </p>
-                              <p className="text-sm text-slate-500">
+                              <p className="text-sm text-slate-600">
                                 PNG, JPG, GIF hasta 10MB
                               </p>
                             </div>
@@ -547,13 +547,13 @@ export default function DashboardClient() {
                             placeholder="https://ejemplo.com/mi-imagen.jpg"
                             value={imageUrl}
                             onChange={(e) => setImageUrl(e.target.value)}
-                            className="flex-1 bg-white border-slate-300 text-slate-900 placeholder:text-slate-500 focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+                            className="flex-1 bg-white border-slate-300 text-slate-900 placeholder:text-slate-600 focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
                           />
                           <Button 
                             type="button" 
                             onClick={handleUrlSubmit}
                             disabled={!imageUrl.trim()}
-                            className="bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 hover:border-slate-400 disabled:bg-slate-50 disabled:text-slate-400 disabled:border-slate-200"
+                            className="bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 hover:border-slate-400 disabled:bg-slate-50 disabled:text-slate-600 disabled:border-slate-200"
                           >
                             Cargar
                           </Button>
@@ -579,7 +579,7 @@ export default function DashboardClient() {
                           </div>
                         )}
                         
-                        <p className="text-sm text-slate-500">
+                        <p className="text-sm text-slate-600">
                           Ingresa una URL válida que apunte directamente a una imagen (PNG, JPG, GIF)
                         </p>
                       </div>
@@ -628,7 +628,7 @@ export default function DashboardClient() {
                 <Textarea
                   id="demographics"
                   placeholder="Sube una imagen para generar la demografía con IA, o descríbela tú mismo aquí..."
-                  className="resize-none bg-white border-slate-300 text-slate-700 placeholder:text-slate-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all duration-200 leading-relaxed"
+                  className="resize-none bg-white border-slate-300 text-slate-700 placeholder:text-slate-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all duration-200 leading-relaxed"
                   value={demographics}
                   onChange={(e) => {
                     setDemographics(e.target.value);
@@ -663,7 +663,7 @@ export default function DashboardClient() {
                     setErrors(prev => ({...prev, objective: undefined}));
                 }} value={objective}>
                   <SelectTrigger className="bg-white border-slate-300 text-slate-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all duration-200 h-11">
-                    <SelectValue placeholder="Selecciona un objetivo" className="text-slate-500" />
+                    <SelectValue placeholder="Selecciona un objetivo" className="text-slate-600" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-slate-200 shadow-lg">
                     <SelectItem value="awareness" className="text-slate-800 hover:bg-blue-50 focus:bg-blue-50 cursor-pointer">

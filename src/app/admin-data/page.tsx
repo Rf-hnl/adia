@@ -243,7 +243,7 @@ export default function AdminDataPage() {
             <CardTitle className="text-2xl font-bold text-white">
               🔒 Admin Access
             </CardTitle>
-            <CardDescription className="text-slate-300">
+            <CardDescription className="text-slate-100">
               Acceso restringido a datos del sistema
             </CardDescription>
           </CardHeader>
@@ -255,7 +255,7 @@ export default function AdminDataPage() {
                   placeholder="Contraseña de acceso"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
+                  className="w-full bg-slate-700 border-slate-600 text-white placeholder:text-slate-600"
                 />
               </div>
               <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
@@ -276,7 +276,7 @@ export default function AdminDataPage() {
             <h1 className="text-3xl font-bold text-white">
               📊 ADIA Admin Dashboard
             </h1>
-            <p className="text-slate-300">
+            <p className="text-slate-100">
               Panel administrativo - Datos de la base de datos
             </p>
           </div>
@@ -304,31 +304,31 @@ export default function AdminDataPage() {
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-7 bg-slate-800 border-slate-700">
-            <TabsTrigger value="overview" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-slate-300">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-slate-100">
               <BarChart3 className="h-4 w-4 mr-2" />
               Overview
             </TabsTrigger>
-            <TabsTrigger value="sessions" className="data-[state=active]:bg-green-600 data-[state=active]:text-white text-slate-300">
+            <TabsTrigger value="sessions" className="data-[state=active]:bg-green-600 data-[state=active]:text-white text-slate-100">
               <TrendingUp className="h-4 w-4 mr-2" />
               Análisis
             </TabsTrigger>
-            <TabsTrigger value="feedback" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white text-slate-300">
+            <TabsTrigger value="feedback" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white text-slate-100">
               <MessageSquare className="h-4 w-4 mr-2" />
               Feedback
             </TabsTrigger>
-            <TabsTrigger value="users" className="data-[state=active]:bg-indigo-600 data-[state=active]:text-white text-slate-300">
+            <TabsTrigger value="users" className="data-[state=active]:bg-indigo-600 data-[state=active]:text-white text-slate-100">
               <Users className="h-4 w-4 mr-2" />
               Usuarios
             </TabsTrigger>
-            <TabsTrigger value="stats" className="data-[state=active]:bg-yellow-600 data-[state=active]:text-white text-slate-300">
+            <TabsTrigger value="stats" className="data-[state=active]:bg-yellow-600 data-[state=active]:text-white text-slate-100">
               <BarChart3 className="h-4 w-4 mr-2" />
               Estadísticas
             </TabsTrigger>
-            <TabsTrigger value="errors" className="data-[state=active]:bg-red-600 data-[state=active]:text-white text-slate-300">
+            <TabsTrigger value="errors" className="data-[state=active]:bg-red-600 data-[state=active]:text-white text-slate-100">
               <AlertTriangle className="h-4 w-4 mr-2" />
               Errores
             </TabsTrigger>
-            <TabsTrigger value="webhook" className="data-[state=active]:bg-cyan-600 data-[state=active]:text-white text-slate-300">
+            <TabsTrigger value="webhook" className="data-[state=active]:bg-cyan-600 data-[state=active]:text-white text-slate-100">
               <Webhook className="h-4 w-4 mr-2" />
               Webhook
             </TabsTrigger>
@@ -409,12 +409,12 @@ export default function AdminDataPage() {
                     <div key={session.id} className="flex items-center justify-between p-3 bg-gradient-to-r from-slate-700 to-slate-600 rounded-lg border border-slate-500">
                       <div>
                         <p className="font-medium text-white">Análisis #{session.id.slice(-6)}</p>
-                        <p className="text-sm text-slate-300">
+                        <p className="text-sm text-slate-100">
                           Score: {session.results.performanceScore} | {session.objective}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-medium text-slate-300">{formatDate(session.createdAt)}</p>
+                        <p className="text-sm font-medium text-slate-100">{formatDate(session.createdAt)}</p>
                         <Badge className={getScoreColor(session.results.performanceScore)}>
                           {session.results.performanceScore}
                         </Badge>
@@ -447,11 +447,11 @@ export default function AdminDataPage() {
                       <div>
                         <h3 className="font-semibold mb-2 text-white">📋 Información General</h3>
                         <div className="space-y-1 text-sm">
-                          <p className="text-slate-300"><strong className="text-white">ID:</strong> {session.id}</p>
-                          <p className="text-slate-300"><strong className="text-white">Usuario:</strong> {session.anonymousUserId.slice(-8)}</p>
-                          <p className="text-slate-300"><strong className="text-white">Fecha:</strong> {formatDate(session.createdAt)}</p>
-                          <p className="text-slate-300"><strong className="text-white">Objetivo:</strong> {session.objective}</p>
-                          <p className="text-slate-300"><strong className="text-white">Tiempo:</strong> {session.processingTimeMs}ms</p>
+                          <p className="text-slate-100"><strong className="text-white">ID:</strong> {session.id}</p>
+                          <p className="text-slate-100"><strong className="text-white">Usuario:</strong> {session.anonymousUserId.slice(-8)}</p>
+                          <p className="text-slate-100"><strong className="text-white">Fecha:</strong> {formatDate(session.createdAt)}</p>
+                          <p className="text-slate-100"><strong className="text-white">Objetivo:</strong> {session.objective}</p>
+                          <p className="text-slate-100"><strong className="text-white">Tiempo:</strong> {session.processingTimeMs}ms</p>
                         </div>
                       </div>
 
@@ -459,25 +459,25 @@ export default function AdminDataPage() {
                         <h3 className="font-semibold mb-2 text-white">🎯 Puntuaciones</h3>
                         <div className="space-y-2">
                           <div className="flex justify-between">
-                            <span className="text-slate-300">Performance:</span>
+                            <span className="text-slate-100">Performance:</span>
                             <Badge className={getScoreColor(session.results.performanceScore)}>
                               {session.results.performanceScore}
                             </Badge>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-slate-300">Claridad:</span>
+                            <span className="text-slate-100">Claridad:</span>
                             <Badge className={getScoreColor(session.results.clarityScore)}>
                               {session.results.clarityScore}
                             </Badge>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-slate-300">Diseño:</span>
+                            <span className="text-slate-100">Diseño:</span>
                             <Badge className={getScoreColor(session.results.designScore)}>
                               {session.results.designScore}
                             </Badge>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-slate-300">Audiencia:</span>
+                            <span className="text-slate-100">Audiencia:</span>
                             <Badge className={getScoreColor(session.results.audienceAffinityScore)}>
                               {session.results.audienceAffinityScore}
                             </Badge>
@@ -487,7 +487,7 @@ export default function AdminDataPage() {
 
                       <div>
                         <h3 className="font-semibold mb-2 text-white">👥 Demografía</h3>
-                        <p className="text-sm text-slate-300 mb-4">
+                        <p className="text-sm text-slate-100 mb-4">
                           {session.demographics}
                         </p>
                         
@@ -496,7 +496,7 @@ export default function AdminDataPage() {
                             <h4 className="font-medium mb-1 text-white">⭐ Rating Usuario</h4>
                             <div className="flex items-center">
                               <span className="text-yellow-400">★</span>
-                              <span className="ml-1 text-slate-300">{session.userRating}/5</span>
+                              <span className="ml-1 text-slate-100">{session.userRating}/5</span>
                             </div>
                           </div>
                         )}
@@ -507,7 +507,7 @@ export default function AdminDataPage() {
                       <h3 className="font-semibold mb-2 text-white">💡 Recomendaciones ({session.results.recommendations.length})</h3>
                       <div className="space-y-1">
                         {session.results.recommendations.map((rec, index) => (
-                          <p key={index} className="text-sm text-slate-300">
+                          <p key={index} className="text-sm text-slate-100">
                             {index + 1}. {rec}
                           </p>
                         ))}
@@ -547,25 +547,25 @@ export default function AdminDataPage() {
                         
                         <div className="space-y-2">
                           <div className="flex justify-between">
-                            <span className="text-slate-300">Rating General:</span>
+                            <span className="text-slate-100">Rating General:</span>
                             <span className="font-medium text-yellow-400">{feedback.overallRating}/5 ⭐</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-slate-300">Precisión:</span>
+                            <span className="text-slate-100">Precisión:</span>
                             <span className="font-medium text-blue-400">{feedback.accuracyRating}/5</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-slate-300">Utilidad:</span>
+                            <span className="text-slate-100">Utilidad:</span>
                             <span className="font-medium text-green-400">{feedback.usefulnessRating}/5</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-slate-300">Recomendaría:</span>
+                            <span className="text-slate-100">Recomendaría:</span>
                             <Badge className={feedback.wouldRecommend ? "bg-green-600 text-white" : "bg-red-600 text-white"}>
                               {feedback.wouldRecommend ? "Sí" : "No"}
                             </Badge>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-slate-300">Usaría de nuevo:</span>
+                            <span className="text-slate-100">Usaría de nuevo:</span>
                             <Badge className={feedback.willUseAgain ? "bg-green-600 text-white" : "bg-red-600 text-white"}>
                               {feedback.willUseAgain ? "Sí" : "No"}
                             </Badge>
@@ -575,11 +575,11 @@ export default function AdminDataPage() {
 
                       <div>
                         <h4 className="font-semibold mb-2 text-white">💬 Comentarios</h4>
-                        <p className="text-sm text-slate-300 bg-slate-700 p-3 rounded-lg border border-slate-600">
+                        <p className="text-sm text-slate-100 bg-slate-700 p-3 rounded-lg border border-slate-600">
                           {feedback.feedback || "Sin comentarios"}
                         </p>
                         
-                        <div className="mt-4 text-xs text-slate-400">
+                        <div className="mt-4 text-xs text-slate-600">
                           <p>Usuario: {feedback.anonymousUserId.slice(-8)}</p>
                           <p>Sesión: {feedback.analysisSessionId.slice(-8)}</p>
                         </div>
@@ -612,17 +612,17 @@ export default function AdminDataPage() {
                       <div>
                         <h3 className="font-semibold mb-2 text-white">👤 Usuario #{user.id.slice(-8)}</h3>
                         <div className="space-y-1 text-sm">
-                          <p className="text-slate-300"><strong className="text-white">Creado:</strong> {formatDate(user.createdAt)}</p>
-                          <p className="text-slate-300"><strong className="text-white">Última actividad:</strong> {formatDate(user.lastActive)}</p>
-                          <p className="text-slate-300"><strong className="text-white">Análisis realizados:</strong> {user.analysisCount}</p>
-                          <p className="text-slate-300"><strong className="text-white">Feedback dado:</strong> {user.feedbackCount}</p>
-                          <p className="text-slate-300"><strong className="text-white">Sesiones:</strong> {user.sessionCount}</p>
+                          <p className="text-slate-100"><strong className="text-white">Creado:</strong> {formatDate(user.createdAt)}</p>
+                          <p className="text-slate-100"><strong className="text-white">Última actividad:</strong> {formatDate(user.lastActive)}</p>
+                          <p className="text-slate-100"><strong className="text-white">Análisis realizados:</strong> {user.analysisCount}</p>
+                          <p className="text-slate-100"><strong className="text-white">Feedback dado:</strong> {user.feedbackCount}</p>
+                          <p className="text-slate-100"><strong className="text-white">Sesiones:</strong> {user.sessionCount}</p>
                         </div>
                       </div>
 
                       <div>
                         <h4 className="font-semibold mb-2 text-white">📱 Dispositivo</h4>
-                        <div className="space-y-1 text-sm text-slate-300">
+                        <div className="space-y-1 text-sm text-slate-100">
                           <p><strong className="text-white">Plataforma:</strong> {user.deviceInfo?.platform || 'N/A'}</p>
                           <p><strong className="text-white">Idioma:</strong> {user.deviceInfo?.language || 'N/A'}</p>
                           <p><strong className="text-white">Resolución:</strong> {user.deviceInfo?.screenResolution || 'N/A'}</p>
@@ -672,9 +672,9 @@ export default function AdminDataPage() {
                       <div>
                         <h3 className="font-semibold mb-2 text-white">📅 {stat.date}</h3>
                         <div className="space-y-1 text-sm">
-                          <p className="text-slate-300"><strong className="text-white">Total análisis:</strong> {stat.totalAnalyses}</p>
-                          <p className="text-slate-300"><strong className="text-white">Usuarios únicos:</strong> {stat.uniqueUsers}</p>
-                          <p className="text-slate-300"><strong className="text-white">Tiempo promedio:</strong> {stat.avgProcessingTime}ms</p>
+                          <p className="text-slate-100"><strong className="text-white">Total análisis:</strong> {stat.totalAnalyses}</p>
+                          <p className="text-slate-100"><strong className="text-white">Usuarios únicos:</strong> {stat.uniqueUsers}</p>
+                          <p className="text-slate-100"><strong className="text-white">Tiempo promedio:</strong> {stat.avgProcessingTime}ms</p>
                         </div>
                       </div>
 
@@ -684,7 +684,7 @@ export default function AdminDataPage() {
                           {Object.entries(stat.topObjectives || {})
                             .sort(([,a], [,b]) => (b as number) - (a as number))
                             .map(([objective, count]) => (
-                              <p key={objective} className="text-slate-300">
+                              <p key={objective} className="text-slate-100">
                                 <strong className="text-white">{objective}:</strong> {count as number}
                               </p>
                             ))
@@ -695,8 +695,8 @@ export default function AdminDataPage() {
                       <div>
                         <h4 className="font-semibold mb-2 text-white">💬 Feedback</h4>
                         <div className="space-y-1 text-sm">
-                          <p className="text-slate-300"><strong className="text-white">Total feedback:</strong> {stat.feedbackCount}</p>
-                          <p className="text-slate-300"><strong className="text-white">Rating promedio:</strong> {stat.avgRating?.toFixed(1)}/5</p>
+                          <p className="text-slate-100"><strong className="text-white">Total feedback:</strong> {stat.feedbackCount}</p>
+                          <p className="text-slate-100"><strong className="text-white">Rating promedio:</strong> {stat.avgRating?.toFixed(1)}/5</p>
                         </div>
                       </div>
 
@@ -742,10 +742,10 @@ export default function AdminDataPage() {
                           <h3 className="font-semibold text-white">🚨 Error #{error.id.slice(-6)}</h3>
                         </div>
                         <div className="space-y-1 text-sm">
-                          <p className="text-slate-300"><strong className="text-white">Fecha:</strong> {formatDate(error.createdAt)}</p>
-                          <p className="text-slate-300"><strong className="text-white">Usuario:</strong> {error.anonymousUserId.slice(-8)}</p>
-                          <p className="text-slate-300"><strong className="text-white">Contexto:</strong> {error.context}</p>
-                          <p className="text-slate-300"><strong className="text-white">Tipo:</strong> {error.error.name}</p>
+                          <p className="text-slate-100"><strong className="text-white">Fecha:</strong> {formatDate(error.createdAt)}</p>
+                          <p className="text-slate-100"><strong className="text-white">Usuario:</strong> {error.anonymousUserId.slice(-8)}</p>
+                          <p className="text-slate-100"><strong className="text-white">Contexto:</strong> {error.context}</p>
+                          <p className="text-slate-100"><strong className="text-white">Tipo:</strong> {error.error.name}</p>
                         </div>
                       </div>
 
@@ -772,7 +772,7 @@ export default function AdminDataPage() {
             <Card className="bg-gradient-to-br from-slate-800 to-slate-700 border-slate-600 shadow-xl">
               <CardHeader>
                 <CardTitle className="text-white">📡 Información del Webhook</CardTitle>
-                <CardDescription className="text-slate-300">
+                <CardDescription className="text-slate-100">
                   API endpoint para análisis de creativos publicitarios desde herramientas externas
                 </CardDescription>
                 <div className="mt-2">
@@ -813,15 +813,15 @@ export default function AdminDataPage() {
                   <h3 className="font-semibold text-white mb-2">📋 Campos Requeridos</h3>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center p-2 bg-slate-700 rounded border border-slate-600">
-                      <span className="text-slate-300"><strong className="text-white">image</strong> (string)</span>
+                      <span className="text-slate-100"><strong className="text-white">image</strong> (string)</span>
                       <Badge className="bg-blue-600 text-white">Base64 o HTTP/HTTPS URL</Badge>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-slate-700 rounded border border-slate-600">
-                      <span className="text-slate-300"><strong className="text-white">demographics</strong> (string)</span>
+                      <span className="text-slate-100"><strong className="text-white">demographics</strong> (string)</span>
                       <Badge className="bg-green-600 text-white">Min 10 chars</Badge>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-slate-700 rounded border border-slate-600">
-                      <span className="text-slate-300"><strong className="text-white">objective</strong> (string)</span>
+                      <span className="text-slate-100"><strong className="text-white">objective</strong> (string)</span>
                       <Badge className="bg-purple-600 text-white">Min 5 chars</Badge>
                     </div>
                   </div>
@@ -830,7 +830,7 @@ export default function AdminDataPage() {
                 <div>
                   <h3 className="font-semibold text-white mb-2">💾 Ejemplo de JSON</h3>
                   <div className="bg-slate-900 p-4 rounded-lg border border-slate-600 overflow-x-auto">
-                    <pre className="text-sm text-slate-300 font-mono">{`// Opción 1: Con imagen base64
+                    <pre className="text-sm text-slate-100 font-mono">{`// Opción 1: Con imagen base64
 {
   "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
   "demographics": "Mujeres de 25-35 años, urbanas, con ingresos medios-altos, interesadas en moda y lifestyle",
@@ -857,7 +857,7 @@ export default function AdminDataPage() {
                 <div>
                   <h3 className="font-semibold text-white mb-2">✅ Respuesta Exitosa</h3>
                   <div className="bg-slate-900 p-4 rounded-lg border border-slate-600 overflow-x-auto">
-                    <pre className="text-sm text-slate-300 font-mono">{`{
+                    <pre className="text-sm text-slate-100 font-mono">{`{
   "success": true,
   "timestamp": "2024-01-01T12:00:00.000Z",
   "analysis": {
@@ -926,7 +926,7 @@ export default function AdminDataPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <h4 className="font-semibold text-white mb-2">🟢 Para Postman</h4>
-                    <div className="text-sm text-slate-300 space-y-1">
+                    <div className="text-sm text-slate-100 space-y-1">
                       <p>1. Método: <span className="text-cyan-400">POST</span></p>
                       <p>2. URL: <span className="text-cyan-400">http://localhost:3000/api/webhook/analyze</span></p>
                       <p>3. Headers: <span className="text-cyan-400">Content-Type: application/json</span></p>
@@ -935,7 +935,7 @@ export default function AdminDataPage() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-white mb-2">🔄 Para n8n</h4>
-                    <div className="text-sm text-slate-300 space-y-1">
+                    <div className="text-sm text-slate-100 space-y-1">
                       <p>1. Nodo: <span className="text-cyan-400">HTTP Request</span></p>
                       <p>2. Method: <span className="text-cyan-400">POST</span></p>
                       <p>3. URL: <span className="text-cyan-400">{'{{$env.ADIA_WEBHOOK_URL}}'}</span></p>
@@ -944,7 +944,7 @@ export default function AdminDataPage() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-white mb-2">🖼️ Formatos Imagen</h4>
-                    <div className="text-sm text-slate-300 space-y-1">
+                    <div className="text-sm text-slate-100 space-y-1">
                       <p>✅ <span className="text-green-400">Base64:</span> data:image/...</p>
                       <p>✅ <span className="text-blue-400">HTTP URL:</span> http://...</p>
                       <p>✅ <span className="text-blue-400">HTTPS URL:</span> https://...</p>
@@ -964,15 +964,15 @@ export default function AdminDataPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="p-4 bg-blue-900/30 rounded-lg border border-blue-500/30">
                     <h4 className="font-semibold text-white mb-2">🤖 Automatización</h4>
-                    <p className="text-sm text-slate-300">Integra con n8n para análisis automático de creativos desde Google Drive o Dropbox</p>
+                    <p className="text-sm text-slate-100">Integra con n8n para análisis automático de creativos desde Google Drive o Dropbox</p>
                   </div>
                   <div className="p-4 bg-green-900/30 rounded-lg border border-green-500/30">
                     <h4 className="font-semibold text-white mb-2">🔬 Testing</h4>
-                    <p className="text-sm text-slate-300">Usa Postman para probar diferentes combinaciones de demografías y objetivos</p>
+                    <p className="text-sm text-slate-100">Usa Postman para probar diferentes combinaciones de demografías y objetivos</p>
                   </div>
                   <div className="p-4 bg-purple-900/30 rounded-lg border border-purple-500/30">
                     <h4 className="font-semibold text-white mb-2">🔄 Integración</h4>
-                    <p className="text-sm text-slate-300">Conecta con herramientas de diseño o plataformas de marketing existentes</p>
+                    <p className="text-sm text-slate-100">Conecta con herramientas de diseño o plataformas de marketing existentes</p>
                   </div>
                 </div>
               </CardContent>

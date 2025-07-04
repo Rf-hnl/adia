@@ -31,7 +31,7 @@ interface RatingSection {
 const StarRating = ({ label, value, onChange }: RatingSection) => {
   return (
     <div className="space-y-2">
-      <Label className="text-sm font-medium text-slate-700">{label}</Label>
+      <Label className="text-sm font-medium text-slate-900">{label}</Label>
       <div className="flex gap-1">
         {[1, 2, 3, 4, 5].map((star) => (
           <button
@@ -156,12 +156,12 @@ export function FeedbackDialog({ analysisSessionId, onFeedbackSubmitted }: Feedb
           Dar Feedback
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="max-w-[95vw] sm:max-w-md mx-4 sm:mx-0">
         <DialogHeader>
-          <DialogTitle className="text-blue-600">
+          <DialogTitle className="text-slate-900">
             {step === 1 ? "¿Cómo fue tu experiencia?" : "Cuéntanos más"}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-slate-700">
             {step === 1 
               ? "Tu feedback nos ayuda a mejorar el análisis con IA" 
               : "Ayúdanos a entender cómo podemos mejorar"
@@ -219,7 +219,7 @@ export function FeedbackDialog({ analysisSessionId, onFeedbackSubmitted }: Feedb
 
             {/* Text feedback */}
             <div className="space-y-2">
-              <Label htmlFor="feedback" className="text-sm font-medium text-slate-700">
+              <Label htmlFor="feedback" className="text-sm font-medium text-slate-900">
                 ¿Qué te gustó o no te gustó?
               </Label>
               <Textarea
@@ -234,7 +234,7 @@ export function FeedbackDialog({ analysisSessionId, onFeedbackSubmitted }: Feedb
 
             {/* Improvement suggestions */}
             <div className="space-y-2">
-              <Label htmlFor="improvements" className="text-sm font-medium text-slate-700">
+              <Label htmlFor="improvements" className="text-sm font-medium text-slate-900">
                 ¿Cómo podríamos mejorar? (opcional)
               </Label>
               <Textarea
@@ -250,7 +250,7 @@ export function FeedbackDialog({ analysisSessionId, onFeedbackSubmitted }: Feedb
             {/* Recommendation questions */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-slate-700">
+                <span className="text-sm font-medium text-slate-900">
                   ¿Recomendarías esta herramienta?
                 </span>
                 <div className="flex gap-2">
@@ -274,7 +274,7 @@ export function FeedbackDialog({ analysisSessionId, onFeedbackSubmitted }: Feedb
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-slate-700">
+                <span className="text-sm font-medium text-slate-900">
                   ¿Volverías a usarla?
                 </span>
                 <div className="flex gap-2">
@@ -299,18 +299,18 @@ export function FeedbackDialog({ analysisSessionId, onFeedbackSubmitted }: Feedb
             </div>
 
             {/* Submit buttons */}
-            <div className="flex gap-2 pt-4">
+            <div className="flex flex-col sm:flex-row gap-2 pt-4">
               <Button
                 variant="outline"
                 onClick={() => setStep(1)}
-                className="flex-1"
+                className="w-full sm:flex-1"
               >
                 Atrás
               </Button>
               <Button
                 onClick={handleDetailedSubmit}
                 disabled={isSubmitting || overallRating === 0}
-                className="flex-1 bg-blue-600 hover:bg-blue-700"
+                className="w-full sm:flex-1 bg-blue-600 hover:bg-blue-700"
               >
                 {isSubmitting ? "Enviando..." : "Enviar Feedback"}
               </Button>

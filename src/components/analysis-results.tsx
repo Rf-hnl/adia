@@ -214,21 +214,21 @@ export const AnalysisResults = ({
       <Card className="bg-white border-blue-200">
         <CardHeader>
           <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <div>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-2">
+              <div className="flex-1 min-w-0">
                 <CardTitle className="text-xl font-semibold text-blue-600">Recomendaciones de IA</CardTitle>
                 <CardDescription className="text-slate-600">
                   Sugerencias priorizadas para mejorar la efectividad de tu anuncio.
                 </CardDescription>
               </div>
               {Array.isArray(result.recommendations) && result.recommendations.length > 0 && (
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                   <ImprovementPromptModal 
                     recommendations={result.recommendations}
                     currentImage={image}
                   />
-                  <Button variant="ghost" size="sm" onClick={handleCopyAll} className="text-blue-600 hover:text-blue-700 hover:bg-transparent">
-                    <Copy className="h-4 w-4" />
+                  <Button variant="ghost" size="sm" onClick={handleCopyAll} className="text-blue-600 hover:text-blue-700 hover:bg-transparent text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-2">
+                    <Copy className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                     <span>Copiar todo</span>
                   </Button>
                 </div>

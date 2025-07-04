@@ -136,20 +136,21 @@ Sube la imagen actual y procederé a crear la versión mejorada siguiendo todas 
         <Button 
           variant="outline" 
           size="sm" 
-          className="text-blue-600 border-blue-300 hover:bg-blue-50 hover:border-blue-400 bg-white"
+          className="text-blue-600 border-blue-300 hover:bg-blue-50 hover:border-blue-400 bg-white text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-2 flex-shrink-0"
         >
-          <Wand2 className="h-4 w-4 mr-2" />
-          Crear prompt de mejora
+          <Wand2 className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+          <span className="hidden xs:inline">Crear prompt de mejora</span>
+          <span className="xs:hidden">Mejorar</span>
         </Button>
       </DialogTrigger>
       
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-50">
+      <DialogContent className="max-w-[95vw] sm:max-w-2xl lg:max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-50 mx-4 sm:mx-0">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl text-black">
+          <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl text-slate-900">
             <Wand2 className="h-6 w-6 text-blue-600" />
             Mejorar creatividad con IA
           </DialogTitle>
-          <DialogDescription className="text-base text-black">
+          <DialogDescription className="text-sm sm:text-base text-slate-700">
             Genera un prompt optimizado para mejorar tu creatividad usando las recomendaciones de análisis
           </DialogDescription>
         </DialogHeader>
@@ -158,11 +159,11 @@ Sube la imagen actual y procederé a crear la versión mejorada siguiendo todas 
           {/* Recomendaciones incluidas */}
           <Card className="bg-white border-slate-200">
             <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2 text-black">
+              <CardTitle className="text-base sm:text-lg flex items-center gap-2 text-slate-900">
                 <CheckCircle2 className="h-5 w-5 text-green-600" />
                 Recomendaciones incluidas en el prompt
               </CardTitle>
-              <CardDescription className="text-black">
+              <CardDescription className="text-slate-700">
                 Estas mejoras serán incorporadas automáticamente en el prompt
               </CardDescription>
             </CardHeader>
@@ -226,17 +227,17 @@ Sube la imagen actual y procederé a crear la versión mejorada siguiendo todas 
             <CardContent className="space-y-4">
               {/* Plataformas LLM */}
               <div>
-                <h4 className="font-semibold mb-3 text-slate-800">Plataformas recomendadas:</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <h4 className="font-semibold mb-3 text-slate-900">Plataformas recomendadas:</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {llmPlatforms.map((platform, index) => (
                     <Card key={index} className="hover:shadow-md transition-shadow cursor-pointer bg-white border-slate-200">
                       <CardContent className="p-4">
                         <div className="flex items-center gap-3 mb-2">
                           <div className={`w-3 h-3 rounded-full ${platform.color}`}></div>
-                          <h5 className="font-semibold text-sm">{platform.name}</h5>
+                          <h5 className="font-semibold text-sm text-slate-900">{platform.name}</h5>
                           <ExternalLink className="h-4 w-4 text-slate-400 ml-auto" />
                         </div>
-                        <p className="text-xs text-slate-600">{platform.description}</p>
+                        <p className="text-xs text-slate-700">{platform.description}</p>
                         <Button
                           variant="ghost" 
                           size="sm" 
@@ -299,7 +300,7 @@ Sube la imagen actual y procederé a crear la versión mejorada siguiendo todas 
                         <img 
                           src={currentImage} 
                           alt="Creatividad actual" 
-                          className="max-w-32 max-h-32 object-contain border rounded"
+                          className="max-w-24 max-h-24 sm:max-w-32 sm:max-h-32 object-contain border rounded"
                         />
                       </div>
                     )}
